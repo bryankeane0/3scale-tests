@@ -6,21 +6,21 @@ phases:
         duration: 1m
         maxDuration: 2m
         initialUsersPerSec: 1
-        targetUsersPerSec: 15
-        maxSessions: 150
+        targetUsersPerSec: 18
+        maxSessions: 300
         scenario:
           - loadCsv: &loadCsv
-            - randomCsvRow:
-                file: rhsso_auth.csv
-                skipComments: true
-                removeQuotes: true
-                columns:
-                  0: 0 #hostname
-                  1: 1 #rhsso_url
-                  2: 2 #path
-                  3: 3 #data
+              - randomCsvRow:
+                  file: rhsso_auth.csv
+                  skipComments: true
+                  removeQuotes: true
+                  columns:
+                    0: 0 #hostname
+                    1: 1 #rhsso_url
+                    2: 2 #path
+                    3: 3 #data
           - createToken: &createToken
-            - httpRequest:
+              - httpRequest:
                   authority:
                     fromVar: 1
                   POST:
@@ -31,119 +31,119 @@ phases:
                     fromVar: 3
                   handler:
                     body:
-                     json:
-                       query: .access_token
-                       toVar: access_token
+                      json:
+                        query: .access_token
+                        toVar: access_token
           - getData: &getData
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                GET: /0/nothing/get/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  GET: /0/nothing/get/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
           - postLargeData0: &post5KB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_5KB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_5KB.txt
           - postLargeData1: &post20KB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_20KB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_20KB.txt
           - postLargeData2: &post100KB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_100KB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_100KB.txt
           - postLargeData3: &post500KB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_500KB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_500KB.txt
           - postLargeData4: &post1MB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_1MB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_1MB.txt
           - postLargeData5: &post5MB
-            - template:
-                    pattern: Bearer ${access_token}
-                    toVar: authorization
-            - randomInt: randomId <- 1 .. 99999
-            - httpRequest:
-                authority:
-                  fromVar: 0
-                POST: /0/nothing/${randomId}
-                sync: true
-                headers:
-                  authorization:
-                    fromVar: authorization
-                body:
-                  fromFile: payload_5MB.txt
+              - template:
+                  pattern: Bearer ${access_token}
+                  toVar: authorization
+              - randomInt: randomId <- 1 .. 99999
+              - httpRequest:
+                  authority:
+                    fromVar: 0
+                  POST: /0/nothing/${randomId}
+                  sync: true
+                  headers:
+                    authorization:
+                      fromVar: authorization
+                  body:
+                    fromFile: payload_5MB.txt
 
   - steadyLoad:
       constantRate:
-        duration: 600m
-        maxDuration: 605m
-        usersPerSec: 13
-        maxSessions: 500
+        duration: 10m
+        maxDuration: 12m
+        usersPerSec: 15
+        maxSessions: 1200
         startAfter:
           phase: rampUp
         scenario:
@@ -152,22 +152,37 @@ phases:
           - getData0: *getData
           - postLargeData0: *post5KB
           - getData1: *getData
-          #- postLargeData1: *post1MB
-          - postLargeData1: *post5KB
+          - postLargeData1: *post20KB
           - getData2: *getData
           - postLargeData2: *post100KB
           - getData3: *getData
-          #- postLargeData3: *post500KB
-          - postLargeData3: *post5KB
+          - postLargeData3: *post500KB
           - getData4: *getData
-          - postLargeData4: *post20KB
+          - postLargeData4: *post1MB
           - getData5: *getData
           - postLargeData5: *post5KB
           - getData6: *getData
-          - postLargeData6: *post100KB
+          - postLargeData6: *post5KB
           - getData7: *getData
-          #- postLargeData7: *post5MB
-          - postLargeData7: *post5KB
+          - postLargeData7: *post20KB
           - getData8: *getData
-          - postLargeData8: *post5KB
-          - postLargeData9: *post20KB
+          - postLargeData8: *post100KB
+          - getData9: *getData
+          - postLargeData9: *post5KB
+          - getData10: *getData
+          - postLargeData10: *post20KB
+          - getData11: *getData
+          - postLargeData11: *post100KB
+          - getData12: *getData
+          - postLargeData12: *post5KB
+          - getData13: *getData
+          - postLargeData13: *post20KB
+          - getData14: *getData
+          - postLargeData14: *post100KB
+          - getData15: *getData
+          - postLargeData15: *post500KB
+          - getData16: *getData
+          - postLargeData16: *post100KB
+          - getData17: *getData
+          - postLargeData17: *post20KB
+          - postLargeData18: *post5KB

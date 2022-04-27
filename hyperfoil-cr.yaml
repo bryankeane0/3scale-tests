@@ -1,0 +1,6 @@
+apiVersion: hyperfoil.io/v1alpha2
+kind: Hyperfoil
+metadata:
+ name: hyperfoil
+ namespace: hyperfoil
+spec: {}
